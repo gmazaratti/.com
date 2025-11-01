@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF5F7; /* Soft pink background */
+            overflow-x: hidden;
+            color: #4A233A; /* Dark magenta text */
+        }
+
+        .font-dancing {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* --- Floating Hearts Animation --- */
+        .heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FF8FAB; /* A brighter pink */
+            transform: rotate(-45deg);
+            animation: float 15s linear infinite;
+            opacity: 0;
+        }
+
+            .heart::before,
+            .heart::after {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background: #FF8FAB;
+                border-radius: 50%;
+            }
+
+            .heart::before {
+                top: -10px;
+                left: 0;
+            }
+
+            .heart::after {
+                top: 0;
+                left: 10px;
+            }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(-45deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Card hover effect */
+        .memory-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+            .memory-card:hover {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            }
+
+        /* --- Intro screen styles --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FFF5F7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+        }
+
+        #open-button {
+            padding: 1rem 2rem;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(45deg, #ff8fab, #fb6b90);
+            box-shadow: 0 10px 20px rgba(251, 107, 144, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            #open-button:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 25px rgba(251, 107, 144, 0.5);
+            }
+
+        .heart-icon {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* --- New Particle Explosion Styles --- */
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--particle-color, #FF8FAB); /* Use variable */
+            transform: rotate(-45deg);
+            border-radius: 0;
+            opacity: 1;
+            animation: burst 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 101;
+        }
+
+            .particle::before,
+            .particle::after {
+                content: '';
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background: var(--particle-color, #FF8FAB); /* Use variable */
+                border-radius: 50%;
+            }
+
+            .particle::before {
+                top: -5px;
+                left: 0;
+            }
+
+            .particle::after {
+                top: 0;
+                left: 5px;
+            }
+
+        @keyframes burst {
+            0% {
+                transform: translate(0, 0) rotate(-45deg) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--x), var(--y)) rotate(720deg) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* --- Class to hide content initially --- */
+        .content-wrapper.hidden > * {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* --- Prize Wheel Styles --- */
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+
+        #wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            transition: transform 6s cubic-bezier(0.25, 1, 0.5, 1);
+            background: conic-gradient( #FFADAD 0deg 72deg, #FFD6A5 72deg 144deg, #FDFFB6 144deg 216deg, #CAFFBF 216deg 288deg, #9BF6FF 288deg 360deg );
+        }
+
+        .wheel-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0% 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            padding-right: 2rem;
+            color: #4A233A;
+        }
+
+        #wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 30px solid #D83F87;
+            z-index: 10;
+        }
+
+        #spin-button, #prize-button, .game-button, .puzzle-button, #password-form button {
+            display: inline-block;
+            margin: 1rem auto;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(45deg, #d83f87, #e16da1);
+            box-shadow: 0 8px 15px rgba(216, 63, 135, 0.3);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+            #spin-button:hover, #prize-button:hover, .game-button:hover, .puzzle-button:hover, #password-form button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 20px rgba(216, 63, 135, 0.4);
+            }
+
+            #spin-button:disabled {
+                background: #cccccc;
+                cursor: not-allowed;
+                box-shadow: none;
+            }
+
+        /* Prize Modal */
+        #prize-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+            #prize-modal.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .prize-modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #prize-modal.show .prize-modal-content {
+            transform: scale(1);
+        }
+
+        /* --- Improved Readability --- */
+        .story-content p {
+            line-height: 1.85; /* Increased line height */
+            margin-bottom: 1.25rem; /* Ensure consistent spacing */
+        }
+
+        /* --- Scroll Animation & Timeline --- */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+            .scroll-animate.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+            .timeline-item.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* --- Game Styles --- */
+        #game-canvas {
+            border: 4px solid white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        #game-container:-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #game-container:fullscreen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mobile-controls .arrow {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            user-select: none;
+        }
+
+        /* --- Password & Puzzle Screen --- */
+        #password-screen {
+            /* background-color: #FFF5F7; */ /* Replaced with blur */
+            background-color: rgba(255, 245, 247, 0.7); /* Semi-transparent pink */
+            backdrop-filter: blur(4px); /* Glassy effect */
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .puzzle-container {
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            position: relative; /* Added for back button */
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-5px);
+            }
+
+            20%, 40%, 60%, 80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-error {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .puzzle-option-btn {
+            background: white;
+            color: #D83F87;
+            border: 2px solid #D83F87;
+        }
+
+            .puzzle-option-btn:hover {
+                background: #D83F87;
+                color: white;
+            }
+
+        /* --- Loading Spinner --- */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #D83F87;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 1rem auto;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Password Protection Screen -->
+    <div id="password-screen" class="fixed top-0 left-0 w-full h-full flex justify-center items-center z-[200]">
+        <div id="login-box" class="text-center bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-xl w-11/12 max-w-sm opacity-0 scale-95 transition-all duration-500 ease-out">
+            <h2 class="font-dancing text-4xl text-pink-500 mb-4">A Secret Place</h2>
+            <form id="password-form">
+                <label for="password-input" class="block text-lg mb-2">Safe word?</label>
+                <input type="password" id="password-input" class="text-center w-full rounded-lg border-2 border-pink-200 focus:border-pink-400 focus:ring-pink-400 p-2 transition">
+                <button type="submit" class="font-dancing mt-4">Unlock</button>
+            </form>
+            <p id="error-message" class="text-red-500 mt-2 h-5 transition-opacity duration-300 opacity-0"></p>
+        </div>
+    </div>
+
+    <!-- Heart background container -->
+    <div class="heart-container" id="heart-container"></div>
+
+    <!-- New Intro Screen -->
+    <div id="intro-screen" class="hidden">
+        <button id="open-button" class="font-dancing">
+            Open Me
+            <svg class="heart-icon w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+        </button>
+        <!-- Add this container for particles -->
+        <div id="particle-container" class="absolute inset-0 pointer-events-none"></div>
+    </div>
+
+    <!-- Sound Effects for the Wheel -->
+    <audio id="spin-sound" src="https://cdn.pixabay.com/audio/2022/03/10/audio_c35edc726a.mp3" loop></audio>
+    <audio id="win-sound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2293374b6a.mp3"></audio>
+
+
+    <div class="relative min-h-screen w-full p-4 sm:p-6 lg:p-8 content-wrapper hidden">
+
+        <!-- Spotify Music Player -->
+        <div class="max-w-sm w-full mx-auto mb-8">
+            <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/6vMpPxLV0F5Diwcs6awI1Z?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <header id="main-header" class="text-center my-12 opacity-0 -translate-y-5 transition-all duration-1000">
+            <h1 class="font-dancing text-6xl md:text-8xl font-bold" style="color: #D83F87;">For My Dearest Love</h1>
+            <p class="text-xl mt-4 max-w-2xl mx-auto" style="color: #4A233A;">A little corner of the internet just for you, filled with our moments and memories.</p>
+        </header>
+
+        <main class="space-y-16">
+            <!-- Puzzle 1: Story -->
+            <div id="puzzle-story" class="puzzle-container max-w-md mx-auto text-center bg-white/70 p-8 rounded-2xl shadow-lg opacity-0 -translate-y-5 transition-all duration-1000">
+                <form id="puzzle-form-story">
+                    <button type="button" id="back-to-intro" class="absolute top-4 left-4 puzzle-button puzzle-option-btn !p-2 !text-base !rounded-full opacity-70 hover:opacity-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <label for="puzzle-input-story" class="block text-2xl font-dancing text-pink-500 mb-4">What is my favorite color?</label>
+                    <input type="text" id="puzzle-input-story" class="text-center w-full rounded-lg border-2 border-pink-200 focus:border-pink-400 focus:ring-pink-400 p-2 transition">
+                    <button type="submit" class="puzzle-button font-dancing mt-4">Unlock</button>
+                </form>
+            </div>
+            <section id="story-section" class="hidden">
+                <h2 class="font-dancing text-4xl md:text-5xl text-center mb-8" style="color: #D83F87;">Our Beautiful Story</h2>
+                <div class="story-content max-w-4xl mx-auto bg-white/70 backdrop-blur-sm p-8 rounded-2xl shadow-lg text-lg text-left">
+                    <p>I made this website for you out of the blue, I realized I know how to make websites, I love you, and want to write my appreciation for you down. Every day I spend with you feels like a page out of a romance movie, this is just a small tribute to the journey we've already shared, and the countless amount of adventures that still await us.</p>
+                    <p>I am so happy that you, are MY person, that feels crazy to think, and say, but you’re worth every mile of distance that sadly lies between us. I am happy to know that distance isn’t permanent, and to know that we’ve managed to work through it and continue to, while somehow having a stronger connection day by day. I think the fact that we somehow grew a deeper connection through almost a year apart is a testament to how close our bond is, and I wouldn’t want it any differently, or with anyone else.</p>
+                    <p>You recently asked me how I never run out of words when it comes to my letters; to be transparent, I do run out some times, but because of that I end up sitting there thinking about you and how I feel about you, and the letters I write you aren’t a product of something I write in one go but rather something that I try to pour my heart into, and I’ve never done that for anyone else, and I’m glad that I’m able to for you.</p>
+                    <p>There’s something about you, which I simply can’t put a finger on how to describe, but when it comes to writing for anyone else my mind sort of goes numb, even writing a birthday letter to my parents it’s never nearly as long as what I write for you, and the majority of the time at the end of my letters for you I feel like I didn’t say everything I wanted to, there’s always more love I feel like I could add to it.</p>
+                    <p>My writing, I believe, has improved a lot because of you, you’ve made me look at things differently, appreciate things differently, enjoy small moments and big ones and truly value those around me, you’ve made me realize how valuable connections with people are and how fragile they are, and you’ve made me have a hope in the idea of love, I always used to see love as something corny, something that wasn’t tangible, to me it seemed like something people just thought they had and that was it, but having met you, and known you for nearly three years now, I’ve shifted my perspective, more recently, but nonetheless. I’ve started to see love as not just a word to throw around, but something I can see in people, see in actions, like little things, the texts you send me in the morning, at night, throughout the day when you’re bored, you’ve made me feel like I’m worth something, that to you I’m worth the extra few seconds it takes to send that message, or give that kiss.</p>
+                    <p>Since meeting you, I’ve always seen how empathetic you were, you tried to play it off as you’re someone who’s bad at socializing, but knowing you the way I do, you might fool some people but you can’t fool me. I notice the small things about you, and I’ve realized how genuinely caring you are, how you’re such a sweet girl, how funny you are and your ability to make anyone laugh without even trying, you can turn a situation that seems boring or nerving into an environment where everyone is enjoying.</p>
+                    <p>I’ve always been proud of you, but now more than ever, you’ve been working your ass off for the past months working two jobs, now you have school work on your ass, and as much as I might tease you about it, I’m proud of you for putting yourself out there to try and make friends by joining a sorority, and taking the stand to be the president (of the whole thing because that’s what you are). I’m proud of you for being strong in the easy moments, but especially the hard ones. The ones where you feel like you’re not being heard, seen, or understood.</p>
+                    <p>But I want you to know, even if you feel like you’re not being any of those, I’m always going to be there for you, whether it’s tomorrow, or twenty years down the line, you will always have a special place in my heart. I will always be proud of you and you’ll always be the girl who’s stolen a place in my heart, and replaced it to be better.</p>
+                    <p>You’ve motivated me through some of the toughest times, and made me change the way I act, the way I carry myself, and many other ways. You’ve inspired me more than you know, I’ve had times where I felt like I had a crazy amount of work and I wanted to complain, and then I looked at you, even though you have your soft and weak moments like everyone does, you never let them tear through you, you always end up on top ( ⏸️ ), and you always do well.</p>
+                    <p>I genuinely am so proud of the person you are, the person your becoming, and I’m so glad I’ve been able to, and am able to be part of that journey, because I’ve seen you grow in these past years, and you’ve become a strong woman, and no one can take away from your your accomplishments.</p>
+                    <p>Don’t ever for a second think you’re not worth something, because to me, you’re worth everything, and you’ve worked for everything you’ve ever gotten, you’ve gone the extra mile in everything you do, and you’ve been one of the strongest people I know. I hope the conversation in the car we had a couple months back stuck with you, the one about comparison, because I meant every word I said.</p>
+                    <p>Comparison is the thief of joy, and to compare yourself to people who’ve done less than you and got more isn’t a way to go about things, those things are unfair, but little do we know, we’re going to end up way farther than those people who don’t do shit and get what they want, because you, Gabriela, have worked for these things, you understand the value of them and what it takes to achieve them, whether that’s good grades at St. John’s spending hours on hours studying with sleepless nights, going to class and being on time and ready; whether that’s a paycheck from dance for the hundreds of hours you’ve spent bettering the lives of children and giving them someone to look up to, and I’ve seen it first hand multiple times the way your students look at you, the way their eyes light up when they see you; or whether that’s working at CVS with a boss who’s a dickhead, yet you still power through it.</p>
+                    <p>The difference is, you’ve done all these things, you’ve worked for all these things and you deserve to reap the benefits. No one can ever tell you otherwise, and I hope that you never let someone else tell you otherwise, nor do you ever think otherwise. And even though that’s something you’ll understand with time, if you don’t believe in those things about yourself, I always will, because I’ve seen firsthand how hard working of a person you are.</p>
+                    <p>All that to say, having you in my life has been a blessing. As someone who’s faked love their whole life, having this feeling of euphoria every time I see you, this feeling of genuinely loving someone so much it hurts to leave, is an amazing feeling because I get to have that, and with you. You’ve deepened my understanding for so many things, you’ve shed light on different perspectives on things I never could’ve imagined understanding. Every single one of those long conversations we’ve had, whether about relationships, experiences, us dating, they’ve always left me with a new feeling, a new understanding, and a new need to learn more. Your perspective on things has made me a much better person, and I’d like to say made me more mature.</p>
+                    <p>We once had a long convo about people in our lives who we found to be narcissists, and it was one of the most interesting conversations I’ve ever had, convos like those, or the ones about religion, or the universe, all these topics made me realize there’s so much more to you then a surface level conversation. It made me realize I wish other people could experience and see what I see in you, and I assume people do. Having deep conversations with you showed how willing you are to openly speak about things that most people would never dare to, and that’s beautiful.</p>
+                    <p>I hope you do realize, and don’t actually believe the negative things you often say about yourself, because you are genuinely, the most beautiful, interesting, intelligent, charismatic, charming, empathetic, kind, and caring person I’ve ever met. I could keep going on with a list of traits.</p>
+                    <p>And as many times as I’ve said it, I’ll never be able to truly express how much I mean it, but you’ve become a part of me, and when you’re not with me I don’t feel whole. I feel homesick in my own bed in Canada, because home is wherever you are. For now being on the phone makes me feel closer, like distance disappears for a while, but I can’t wait for the day where that is no longer a problem.</p>
+                    <p>You’ve helped me heal through things in ways you don’t even realize. Just being around you has taken weights off my shoulders, even when I don’t talk about what’s on my mind I feel peace and comfort around you, and that means more to me than I can ever explain.</p>
+                </div>
+                <!-- ✨ Gemini API Feature: Poem Generator -->
+                <div class="text-center mt-8">
+                    <button id="poem-button" class="puzzle-button font-dancing">✨ See what our story inspired...</button>
+                    <div id="poem-loader" class="loader hidden"></div>
+                    <div id="poem-display" class="hidden story-content max-w-2xl mx-auto bg-white/70 backdrop-blur-sm p-8 rounded-2xl shadow-lg text-lg text-center mt-6"></div>
+                </div>
+            </section>
+
+            <!-- Puzzle 2: Wheel -->
+            <div id="puzzle-wheel" class="puzzle-container max-w-md mx-auto text-center bg-white/70 p-8 rounded-2xl shadow-lg hidden">
+                <button type="button" id="back-to-puzzle1" class="absolute top-4 left-4 puzzle-button puzzle-option-btn !p-2 !text-base !rounded-full opacity-70 hover:opacity-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <p class="block text-2xl font-dancing text-pink-500 mb-4">Where did we meet?</p>
+                <div id="puzzle-options-wheel" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <button class="puzzle-button puzzle-option-btn">Turkey Bowl</button>
+                    <button class="puzzle-button puzzle-option-btn">Xavier Highschool</button>
+                    <button class="puzzle-button puzzle-option-btn">The Stripclub</button>
+                    <button class="puzzle-button puzzle-option-btn">Your house</button>
+                </div>
+            </div>
+
+            <!-- Interactive Section (Wheel and Game) -->
+            <section id="interactive-section" class="hidden">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    <section id="wheel-section">
+                        <h2 class="font-dancing text-4xl md:text-5xl text-center mb-8" style="color: #D83F87;">Spin to Win!</h2>
+                        <div class="wheel-container">
+                            <div id="wheel-pointer"></div>
+                            <div id="wheel"></div>
+                        </div>
+                        <div class="text-center">
+                            <button id="spin-button" class="font-dancing">Spin!</button>
+                            <button id="prize-button" class="font-dancing hidden">Go grab your prize!</button>
+                        </div>
+                    </section>
+                    <section id="game-section">
+                        <h2 class="font-dancing text-4xl md:text-5xl text-center mb-8" style="color: #D83F87;">Our Little Game</h2>
+                        <div id="game-container" class="max-w-md mx-auto bg-white/70 backdrop-blur-sm p-4 rounded-2xl shadow-lg text-center relative">
+                            <button id="fullscreen-btn" class="absolute top-2 right-2 z-10 p-2 bg-white/50 rounded-full hover:bg-white transition">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 3h6v6m-6-6l7 7m-7 11h6v-6m-6 6l7-7M9 3H3v6m6-6L2 9m7 11H3v-6m6 6L2 15" stroke="#4A233A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            </button>
+                            <canvas id="game-canvas" width="350" height="350" class="rounded-lg mx-auto bg-pink-100"></canvas>
+                            <div id="game-start-screen" class="mt-4">
+                                <p class="mb-2">Collect the hearts! Use arrow keys or swipe to move.</p>
+                                <button id="start-game-btn" class="game-button font-dancing">Start Game</button>
+                            </div>
+                            <div id="game-info" class="mt-4 hidden items-center justify-center">
+                                <p class="text-lg font-semibold">Score: <span id="score">0</span></p>
+                            </div>
+                            <div id="game-over-screen" class="hidden mt-4">
+                                <p class="text-2xl font-bold text-red-500 font-dancing">Game Over!</p>
+                                <p class="text-lg">Your final score: <span id="final-score">0</span></p>
+                                <button id="restart-game-btn" class="game-button font-dancing">Play Again</button>
+                            </div>
+                            <div id="mobile-controls" class="hidden justify-center items-center mt-4">
+                                <div class="grid grid-cols-3 gap-2 w-40">
+                                    <div></div>
+                                    <button id="up-btn" class="arrow col-start-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                                    </button>
+                                    <div></div>
+                                    <button id="left-btn" class="arrow">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                    </button>
+                                    <div></div>
+                                    <button id="right-btn" class="arrow">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                    </button>
+                                    <div></div>
+                                    <button id="down-btn" class="arrow col-start-2">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- Puzzle 3: Gallery -->
+            <div id="puzzle-gallery" class="puzzle-container max-w-md mx-auto text-center bg-white/70 p-8 rounded-2xl shadow-lg hidden">
+                <form id="puzzle-form-gallery">
+                    <button type="button" id="back-to-puzzle2" class="absolute top-4 left-4 puzzle-button puzzle-option-btn !p-2 !text-base !rounded-full opacity-70 hover:opacity-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    <label for="puzzle-input-gallery" class="block text-2xl font-dancing text-pink-500 mb-4">What is my nickname you often call me?</label>
+                    <input type="text" id="puzzle-input-gallery" class="text-center w-full rounded-lg border-2 border-pink-200 focus:border-pink-400 focus:ring-pink-400 p-2 transition">
+                    <button type="submit" class="puzzle-button font-dancing mt-4">Unlock</button>
+                </form>
+            </div>
+            <section id="gallery-section" class="hidden">
+                <h2 class="font-dancing text-4xl md:text-5xl text-center mb-8 relative" style="color: #D83F87;">
+                    <button type="button" id="back-to-puzzle3" class="absolute top-0 left-0 md:left-4 puzzle-button puzzle-option-btn !p-2 !text-base !rounded-full opacity-70 hover:opacity-100">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                    </button>
+                    A Gallery of Memories
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 p-4">
+                    <div class="memory-card bg-white p-3 rounded-xl shadow-lg">
+                        <img src="https://placehold.co/400x400/FFC0CB/4A233A?text=Our+First+Date" alt="Memory 1" class="w-full h-auto rounded-lg object-cover">
+                        <p class="mt-2 text-center font-semibold">Our First Date</p>
+                    </div>
+                    <div class="memory-card bg-white p-3 rounded-xl shadow-lg mt-0 md:mt-8">
+                        <img src="https://placehold.co/400x500/BAA2E8/FFF5F7?text=That+Funny+Moment" alt="Memory 2" class="w-full h-auto rounded-lg object-cover">
+                        <p class="mt-2 text-center font-semibold">That Funny Moment</p>
+                    </div>
+                    <div class="memory-card bg-white p-3 rounded-xl shadow-lg">
+                        <img src="https://placehold.co/400x400/96D7C6/4A233A?text=Beach+Trip" alt="Memory 3" class="w-full h-auto rounded-lg object-cover">
+                        <p class="mt-2 text-center font-semibold">Our Beach Trip</p>
+                    </div>
+                    <div class="memory-card bg-white p-3 rounded-xl shadow-lg mt-0 md:mt-8">
+                        <img src="https://placehold.co/400x500/F5D491/4A233A?text=Favorite+Adventure" alt="Memory 4" class="w-full h-auto rounded-lg object-cover">
+                        <p class="mt-2 text-center font-semibold">Our Favorite Adventure</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Timeline Section -->
+            <section id="timeline-section" class="hidden">
+                <h2 class="font-dancing text-4xl md:text-5xl text-center mb-12" style="color: #D83F87;">Our Journey Together</h2>
+                <div class="container mx-auto px-4">
+                    <div class="relative wrap overflow-hidden p-2 md:p-10 h-full">
+                        <div class="absolute border-opacity-20 border-pink-700 h-full border-2 left-4 md:left-1/2"></div>
+
+                        <!-- Timeline Item 1 -->
+                        <div class="timeline-item mb-8 flex md:justify-between items-center w-full md:w-1/2 md:pr-8 md:right-timeline">
+                            <div class="md:order-1 md:w-5/12"></div>
+                            <div class="z-20 flex items-center order-1 bg-pink-500 shadow-xl w-8 h-8 rounded-full absolute left-0 ml-2 md:static md:ml-0">
+                                <h1 class="mx-auto font-semibold text-lg text-white">1</h1>
+                            </div>
+                            <div class="order-1 bg-pink-200 rounded-lg shadow-xl w-full md:w-5/12 ml-10 md:ml-0 px-6 py-4">
+                                <h3 class="font-dancing mb-1 text-pink-800 text-xl">The Day We Met</h3>
+                                <p class="text-sm font-medium leading-snug tracking-wide text-gray-900 text-opacity-100">November 23, 2023</p>
+                                <p class="text-sm leading-snug tracking-wide text-pink-900 text-opacity-100 mt-2">Where our story first began, at the Turkey Bowl.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 2 -->
+                        <div class="timeline-item mb-8 flex md:justify-between md:flex-row-reverse items-center w-full md:w-1/2 md:pl-8 md:left-timeline self-end md:self-auto">
+                            <div class="md:order-1 md:w-5/12"></div>
+                            <div class="z-20 flex items-center order-1 bg-pink-500 shadow-xl w-8 h-8 rounded-full absolute left-0 ml-2 md:static md:ml-0">
+                                <h1 class="mx-auto text-white font-semibold text-lg">2</h1>
+                            </div>
+                            <div class="order-1 bg-white rounded-lg shadow-xl w-full md:w-5/12 ml-10 md:ml-0 px-6 py-4">
+                                <h3 class="font-dancing mb-1 text-pink-800 text-xl">Our First Anniversary</h3>
+                                <p class="text-sm font-medium leading-snug tracking-wide text-gray-900 text-opacity-100">August 31, 2025</p>
+                                <p class="text-sm leading-snug tracking-wide text-pink-900 text-opacity-100 mt-2">A special day marking a year of love and laughter.</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Item 3 -->
+                        <div class="timeline-item mb-8 flex md:justify-between items-center w-full md:w-1/2 md:pr-8 md:right-timeline">
+                            <div class="md:order-1 md:w-5/12"></div>
+                            <div class="z-20 flex items-center order-1 bg-pink-500 shadow-xl w-8 h-8 rounded-full absolute left-0 ml-2 md:static md:ml-0">
+                                <h1 class="mx-auto font-semibold text-lg text-white">3</h1>
+                            </div>
+                            <div class="order-1 bg-pink-200 rounded-lg shadow-xl w-full md:w-5/12 ml-10 md:ml-0 px-6 py-4">
+                                <h3 class="font-dancing mb-1 text-pink-800 text-xl">Our Wedding Day!</h3>
+                                <p class="text-sm font-medium leading-snug tracking-wide text-gray-900 text-opacity-100">June 1, 2030</p>
+                                <p class="text-sm leading-snug tracking-wide text-pink-900 text-opacity-100 mt-2">The future is bright, and this day will be the start of forever.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ✨ Gemini API Feature: Adventure Generator -->
+            <section id="adventure-section" class="hidden">
+                <h2 class="font-dancing text-4xl md:text-5xl text-center mb-8" style="color: #D83F87;">Our Next Adventure</h2>
+                <div class="max-w-md mx-auto text-center bg-white/70 p-8 rounded-2xl shadow-lg">
+                    <p class="text-lg mb-6">Let's dream up our next memory together...</p>
+                    <button id="adventure-button" class="puzzle-button font-dancing">✨ Get a date idea</button>
+                    <div id="adventure-loader" class="loader hidden"></div>
+                    <div id="adventure-display" class="hidden text-lg bg-pink-100 p-4 rounded-lg mt-6"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Love Timer -->
+        <footer id="footer-section" class="text-center mt-16 py-8 hidden">
+            <div class="bg-white/50 backdrop-blur-sm max-w-3xl mx-auto p-6 rounded-2xl shadow-lg">
+                <h3 class="font-dancing text-2xl md:text-3xl" style="color: #D83F87;">I have loved you for...</h3>
+                <div id="love-timer" class="text-lg md:text-xl font-semibold mt-2 tabular-nums tracking-wider" style="color: #4A233A;">
+                    Calculating...
+                </div>
+
+                <h3 class="font-dancing text-2xl md:text-3xl mt-6" style="color: #D83F87;">Days since we met...</h3>
+                <div id="met-timer" class="text-lg md:text-xl font-semibold mt-2 tabular-nums tracking-wider" style="color: #4A233A;">
+                    Calculating...
+                </div>
+
+                <h3 class="font-dancing text-2xl md:text-3xl mt-6" style="color: #D83F87;">Days until our wedding...</h3>
+                <div id="wedding-timer" class="text-lg md:text-xl font-semibold mt-2 tabular-nums tracking-wider" style="color: #4A233A;">
+                    Calculating...
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Prize Modal -->
+    <div id="prize-modal">
+        <div class="prize-modal-content">
+            <h3 class="font-dancing text-3xl mb-4 text-pink-500">Congratulations!</h3>
+            <p class="text-lg mb-6">You won:</p>
+            <p id="prize-text" class="text-2xl font-bold" style="color: #D83F87;"></p>
+            <button id="close-modal-button" class="mt-6 px-6 py-2 bg-pink-200 text-pink-700 rounded-full">Awesome!</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Password Logic ---
+            const loginBox = document.getElementById('login-box');
+            if (loginBox) {
+                // Animate the login box on load
+                setTimeout(() => {
+                    loginBox.classList.add('opacity-100', 'scale-100');
+                }, 100);
+            }
+
+            const passwordScreen = document.getElementById('password-screen');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const introScreen = document.getElementById('intro-screen');
+            const contentWrapper = document.querySelector('.content-wrapper');
+
+            passwordForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const guess = passwordInput.value.toLowerCase();
+
+                if (guess === 'bubbles') {
+                    passwordScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordScreen.style.display = 'none';
+                        introScreen.classList.remove('hidden');
+                    }, 500);
+                } else {
+                    passwordInput.classList.add('shake-error');
+                    errorMessage.textContent = 'Try again, my love.';
+                    errorMessage.style.opacity = '1';
+                    passwordInput.value = '';
+
+                    setTimeout(() => {
+                        passwordInput.classList.remove('shake-error');
+                        errorMessage.style.opacity = '0';
+                    }, 1000);
+                }
+            });
+
+
+            // --- Intro Screen Logic ---
+            const openButton = document.getElementById('open-button');
+            const mainHeader = document.getElementById('main-header');
+            const puzzleStory = document.getElementById('puzzle-story');
+            const particleContainer = document.getElementById('particle-container'); // Get the container
+
+            openButton.addEventListener('click', () => {
+                // 1. Create particle explosion
+                createHeartExplosion(openButton);
+
+                // 2. Animate the button itself (shrink and fade)
+                openButton.style.transition = 'transform 0.3s ease-in, opacity 0.3s ease-in';
+                openButton.style.transform = 'scale(0)';
+                openButton.style.opacity = '0';
+
+                // 3. Fade out the intro screen (starts at the same time)
+                introScreen.style.opacity = '0';
+
+                // 4. After animations, hide intro screen
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                }, 1000); // Wait for particles and screen fade (1s)
+
+                // 5. Show content wrapper
+                contentWrapper.classList.remove('hidden');
+
+                // 6. Reveal header and first puzzle
+                // This will start fading in as the intro fades out
+                setTimeout(() => {
+                    mainHeader.style.opacity = '1';
+                    mainHeader.style.transform = 'translateY(0)';
+                    puzzleStory.style.opacity = '1';
+                    puzzleStory.style.transform = 'translateY(0)';
+                }, 300); // Start fading in content *during* the explosion/fade out
+            });
+
+            // New function to create the heart explosion
+            function createHeartExplosion(button) {
+                if (!particleContainer) return;
+
+                const rect = button.getBoundingClientRect();
+                // Position particles at the center of the button
+                const startX = rect.left + rect.width / 2;
+                const startY = rect.top + rect.height / 2;
+
+                const numParticles = 30; // Number of hearts
+
+                for (let i = 0; i < numParticles; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+
+                    // Random trajectory
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = Math.random() * 200 + 100; // Fly out 100-300px
+                    const endX = Math.cos(angle) * distance;
+                    const endY = Math.sin(angle) * distance;
+
+                    particle.style.setProperty('--x', `${endX}px`);
+                    particle.style.setProperty('--y', `${endY}px`);
+
+                    // Set initial position
+                    particle.style.left = `${startX}px`;
+                    particle.style.top = `${startY}px`;
+
+                    // Randomize background color slightly
+                    const colors = ['#FF8FAB', '#FB6B90', '#D83F87'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.setProperty('--particle-color', color);
+
+                    particleContainer.appendChild(particle);
+
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 1000); // Match animation duration
+                }
+            }
+
+            // --- PUZZLE LOGIC ---
+
+            // Puzzle 1: Story
+            const puzzleFormStory = document.getElementById('puzzle-form-story');
+            const puzzleInputStory = document.getElementById('puzzle-input-story');
+            const storySection = document.getElementById('story-section');
+            const puzzleWheel = document.getElementById('puzzle-wheel');
+
+            puzzleFormStory.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const answer = puzzleInputStory.value.toLowerCase();
+                if (answer === 'purple') {
+                    puzzleStory.style.display = 'none';
+                    storySection.classList.remove('hidden');
+                    puzzleWheel.classList.remove('hidden');
+                    // Trigger scroll-in animation manually
+                    setTimeout(() => {
+                        storySection.classList.add('scroll-animate', 'is-visible');
+                        puzzleWheel.classList.add('scroll-animate', 'is-visible');
+                    }, 10);
+                } else {
+                    puzzleInputStory.classList.add('shake-error');
+                    puzzleInputStory.value = '';
+                    setTimeout(() => puzzleInputStory.classList.remove('shake-error'), 500);
+                }
+            });
+
+            // Puzzle 2: Wheel
+            const puzzleOptionsWheel = document.getElementById('puzzle-options-wheel');
+            const interactiveSection = document.getElementById('interactive-section');
+            const puzzleGallery = document.getElementById('puzzle-gallery');
+
+            puzzleOptionsWheel.addEventListener('click', function (e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const answer = e.target.textContent;
+                    if (answer === 'Turkey Bowl') {
+                        puzzleWheel.style.display = 'none';
+                        interactiveSection.classList.remove('hidden');
+                        puzzleGallery.classList.remove('hidden');
+                        setTimeout(() => {
+                            interactiveSection.classList.add('scroll-animate', 'is-visible');
+                            puzzleGallery.classList.add('scroll-animate', 'is-visible');
+                        }, 10);
+                    } else {
+                        e.target.classList.add('shake-error');
+                        setTimeout(() => e.target.classList.remove('shake-error'), 500);
+                    }
+                }
+            });
+
+            // Puzzle 3: Gallery
+            const puzzleFormGallery = document.getElementById('puzzle-form-gallery');
+            const puzzleInputGallery = document.getElementById('puzzle-input-gallery');
+            const gallerySection = document.getElementById('gallery-section');
+            const timelineSection = document.getElementById('timeline-section');
+            const adventureSection = document.getElementById('adventure-section'); // ✨ Get adventure section
+            const footerSection = document.getElementById('footer-section');
+
+            puzzleFormGallery.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const answer = puzzleInputGallery.value.toLowerCase();
+                if (answer === 'bubs') {
+                    puzzleGallery.style.display = 'none';
+                    gallerySection.classList.remove('hidden');
+                    timelineSection.classList.remove('hidden');
+                    adventureSection.classList.remove('hidden'); // ✨ Show adventure section
+                    footerSection.classList.remove('hidden');
+                    setTimeout(() => {
+                        gallerySection.classList.add('scroll-animate', 'is-visible');
+                        timelineSection.classList.add('scroll-animate', 'is-visible');
+                        adventureSection.classList.add('scroll-animate', 'is-visible'); // ✨ Animate adventure section
+
+                        // Manually trigger timeline item animations with a stagger
+                        document.querySelectorAll('#timeline-section .timeline-item').forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('is-visible');
+                            }, index * 250);
+                        });
+
+                        footerSection.classList.add('scroll-animate', 'is-visible');
+                    }, 10);
+                } else {
+                    puzzleInputGallery.classList.add('shake-error');
+                    puzzleInputGallery.value = '';
+                    setTimeout(() => puzzleInputGallery.classList.remove('shake-error'), 500);
+                }
+            });
+
+            // --- BACK BUTTON LOGIC ---
+            const backToIntroBtn = document.getElementById('back-to-intro');
+            const backToPuzzle1Btn = document.getElementById('back-to-puzzle1');
+            const backToPuzzle2Btn = document.getElementById('back-to-puzzle2');
+            const backToPuzzle3Btn = document.getElementById('back-to-puzzle3');
+
+            // Back to Intro Screen
+            backToIntroBtn.addEventListener('click', () => {
+                contentWrapper.classList.add('hidden');
+                introScreen.style.display = 'flex';
+                // Need to reset puzzle 1's display, which is set to 'none' on solve
+                puzzleStory.style.display = 'block';
+
+                setTimeout(() => {
+                    introScreen.style.opacity = '1';
+                    // Reset states for when "Open Me" is clicked again
+                    mainHeader.style.opacity = '0';
+                    mainHeader.style.transform = 'translateY(-20px)';
+                    puzzleStory.style.opacity = '0';
+                    puzzleStory.style.transform = 'translateY(-20px)';
+                }, 10);
+            });
+
+            // Back to Puzzle 1 (from Puzzle 2)
+            backToPuzzle1Btn.addEventListener('click', () => {
+                storySection.classList.add('hidden');
+                puzzleWheel.classList.add('hidden');
+                puzzleStory.style.display = 'block'; // un-hides it
+
+                setTimeout(() => {
+                    storySection.classList.remove('scroll-animate', 'is-visible');
+                    puzzleWheel.classList.remove('scroll-animate', 'is-visible');
+                    puzzleStory.classList.add('scroll-animate', 'is-visible'); // Animate it back in
+                }, 10);
+            });
+
+            // Back to Puzzle 2 (from Puzzle 3)
+            backToPuzzle2Btn.addEventListener('click', () => {
+                interactiveSection.classList.add('hidden');
+                puzzleGallery.classList.add('hidden');
+                puzzleWheel.style.display = 'block'; // un-hides it
+
+                setTimeout(() => {
+                    interactiveSection.classList.remove('scroll-animate', 'is-visible');
+                    puzzleGallery.classList.remove('scroll-animate', 'is-visible');
+                    puzzleWheel.classList.add('scroll-animate', 'is-visible');
+                }, 10);
+            });
+
+            // Back to Puzzle 3 (from Final Sections)
+            backToPuzzle3Btn.addEventListener('click', () => {
+                gallerySection.classList.add('hidden');
+                timelineSection.classList.add('hidden');
+                adventureSection.classList.add('hidden');
+                footerSection.classList.add('hidden');
+                puzzleGallery.style.display = 'block'; // un-hides it
+
+                setTimeout(() => {
+                    gallerySection.classList.remove('scroll-animate', 'is-visible');
+                    timelineSection.classList.remove('scroll-animate', 'is-visible');
+                    adventureSection.classList.remove('scroll-animate', 'is-visible');
+                    footerSection.classList.remove('scroll-animate', 'is-visible');
+                    // Manually hide timeline items
+                    document.querySelectorAll('#timeline-section .timeline-item').forEach((item) => {
+                        item.classList.remove('is-visible');
+                    });
+                    puzzleGallery.classList.add('scroll-animate', 'is-visible');
+                }, 10);
+            });
+
+
+            // --- Prize Wheel Logic ---
+            const wheel = document.getElementById('wheel');
+            const spinButton = document.getElementById('spin-button');
+            const prizeButton = document.getElementById('prize-button');
+            const prizeModal = document.getElementById('prize-modal');
+            const prizeText = document.getElementById('prize-text');
+            const closeModalButton = document.getElementById('close-modal-button');
+            const spinSound = document.getElementById('spin-sound');
+            const winSound = document.getElementById('win-sound');
+
+            const prizes = ["A Love Letter", "A Hug", "A Kiss", "You gettin cracked tn", "Movie Night"];
+            const segmentAngle = 360 / prizes.length;
+
+            prizes.forEach((prize, i) => {
+                const segment = document.createElement('div');
+                segment.className = 'wheel-segment';
+                segment.style.transform = `rotate(${segmentAngle * i + segmentAngle / 2}deg)`;
+                segment.textContent = prize;
+                wheel.appendChild(segment);
+            });
+
+            function checkLastSpin() {
+                const lastSpin = localStorage.getItem('lastSpinTime');
+                if (lastSpin) {
+                    const yesterday = Date.now() - (24 * 60 * 60 * 1000);
+                    if (parseInt(lastSpin) > yesterday) {
+                        spinButton.disabled = true;
+                        spinButton.textContent = "Spun Today!";
+                        prizeButton.classList.remove('hidden');
+                    }
+                }
+            }
+
+            function spinWheel() {
+                spinButton.disabled = true;
+                localStorage.setItem('lastSpinTime', Date.now().toString());
+
+                spinSound.play();
+
+                const winningIndex = 3;
+                const prize = prizes[winningIndex];
+
+                const prizeAngle = winningIndex * segmentAngle;
+                const randomOffset = (Math.random() * 0.8 + 0.1) * segmentAngle;
+                const targetAngle = prizeAngle + randomOffset;
+
+                const randomExtraSpins = Math.floor(Math.random() * 4) + 4;
+                const totalRotation = (360 * randomExtraSpins) + (360 - targetAngle);
+
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+                wheel.addEventListener('transitionend', () => {
+                    spinSound.pause();
+                    spinSound.currentTime = 0;
+                    winSound.play();
+                    showPrize(prize);
+                }, { once: true });
+            }
+
+            function showPrize(prize) {
+                prizeText.textContent = prize;
+                prizeModal.classList.add('show');
+                spinButton.textContent = "Spun Today!";
+                prizeButton.classList.remove('hidden');
+            }
+
+            closeModalButton.addEventListener('click', () => prizeModal.classList.remove('show'));
+
+            spinButton.addEventListener('click', spinWheel);
+            checkLastSpin();
+
+            // --- ✨ GEMINI API FUNCTIONS ---
+            const apiKey = ""; // Leave blank.
+
+            /**
+             * Formats plain text for HTML display, converting newlines to <br> tags.
+             */
+            function formatText(text) {
+                return text.replace(/\n/g, '<br>');
+            }
+
+            /**
+             * Calls the Gemini API with exponential backoff.
+             */
+            async function callGeminiAPI(prompt, systemPrompt, maxRetries = 3, delay = 1000) {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: prompt }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                };
+
+                for (let i = 0; i < maxRetries; i++) {
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const result = await response.json();
+
+                        if (result.candidates && result.candidates[0].content.parts[0].text) {
+                            return result.candidates[0].content.parts[0].text;
+                        } else {
+                            throw new Error("Invalid API response structure.");
+                        }
+
+                    } catch (error) {
+                        console.error(`Attempt ${i + 1} failed:`, error);
+                        if (i === maxRetries - 1) {
+                            return "My creative thoughts are sleeping right now... try again in a moment! ❤️";
+                        }
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2; // Exponential backoff
+                    }
+                }
+            }
+
+            // --- ✨ Poem Generator Logic ---
+            const poemButton = document.getElementById('poem-button');
+            const poemLoader = document.getElementById('poem-loader');
+            const poemDisplay = document.getElementById('poem-display');
+
+            poemButton.addEventListener('click', async () => {
+                poemButton.classList.add('hidden');
+                poemLoader.classList.remove('hidden');
+
+                const storyText = document.querySelector('.story-content').textContent;
+                const systemPrompt = "You are a romantic poet. Based on the heartfelt feelings and specific memories in the following letter, write a short, beautiful poem (about 8-12 lines) for 'my love'. Don't just summarize, but capture the *essence* of the feelings expressed about distance, pride, and connection.";
+                const userPrompt = `Here is the letter: ${storyText}`;
+
+                const poem = await callGeminiAPI(userPrompt, systemPrompt);
+
+                poemLoader.classList.add('hidden');
+                poemDisplay.innerHTML = formatText(poem);
+                poemDisplay.classList.remove('hidden');
+            });
+
+            // --- ✨ Adventure Generator Logic ---
+            const adventureButton = document.getElementById('adventure-button');
+            const adventureLoader = document.getElementById('adventure-loader');
+            const adventureDisplay = document.getElementById('adventure-display');
+
+            adventureButton.addEventListener('click', async () => {
+                adventureButton.disabled = true;
+                adventureLoader.classList.remove('hidden');
+                adventureDisplay.classList.add('hidden');
+
+                const systemPrompt = "You are a creative and romantic date planner. My partner and I are in a long-distance relationship. Give us one, and only one, creative and romantic date idea. This idea could be for something we can do virtually, or for when we next meet in person. Make it sound special and keep it to a short, single paragraph.";
+                const userPrompt = "Give us a new date idea!";
+
+                const idea = await callGeminiAPI(userPrompt, systemPrompt);
+
+                adventureLoader.classList.add('hidden');
+                adventureDisplay.innerHTML = formatText(idea);
+                adventureDisplay.classList.remove('hidden');
+                adventureButton.disabled = false;
+            });
+
+            // --- Love Timer ---
+            const anniversaryDate = new Date('2025-08-31T00:00:00');
+            function updateLoveTimer() {
+                const now = new Date();
+                let diff = now - anniversaryDate;
+                if (diff < 0) diff = 0;
+
+                let years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                diff -= years * (1000 * 60 * 60 * 24 * 365.25);
+
+                let months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
+                diff -= months * (1000 * 60 * 60 * 24 * 30.44);
+
+                let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                diff -= days * (1000 * 60 * 60 * 24);
+
+                let hours = Math.floor(diff / (1000 * 60 * 60));
+                diff -= hours * (1000 * 60 * 60);
+
+                let minutes = Math.floor(diff / (1000 * 60));
+                diff -= minutes * (1000 * 60);
+
+                let seconds = Math.floor(diff / 1000);
+
+                const timerElement = document.getElementById('love-timer');
+                if (timerElement) {
+                    timerElement.innerHTML = `
+                            <span>${years} years, </span>
+                            <span>${months} months, </span>
+                            <span>${days} days, </span>
+                            <span>${hours} hours, </span>
+                            <span>${minutes} minutes, </span>
+                            <span>and ${seconds} seconds</span>
+                        `;
+                }
+            }
+            if (document.getElementById('love-timer')) {
+                setInterval(updateLoveTimer, 1000);
+                updateLoveTimer();
+            }
+
+            // --- "Since we met" Timer ---
+            const metDate = new Date('2023-11-23T09:57:00');
+            function updateMetTimer() {
+                const now = new Date();
+                let diff = now - metDate;
+                if (diff < 0) diff = 0;
+
+                let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                diff -= days * (1000 * 60 * 60 * 24);
+                let hours = Math.floor(diff / (1000 * 60 * 60));
+                diff -= hours * (1000 * 60 * 60);
+                let minutes = Math.floor(diff / (1000 * 60));
+                diff -= minutes * (1000 * 60);
+                let seconds = Math.floor(diff / 1000);
+
+                const timerElement = document.getElementById('met-timer');
+                if (timerElement) {
+                    timerElement.innerHTML = `
+                            <span>${days} days, </span>
+                            <span>${hours} hours, </span>
+                            <span>${minutes} minutes, </span>
+                            <span>and ${seconds} seconds</span>
+                        `;
+                }
+            }
+            if (document.getElementById('met-timer')) {
+                setInterval(updateMetTimer, 1000);
+                updateMetTimer();
+            }
+
+            // --- Wedding Countdown Timer ---
+            const weddingDate = new Date('2030-06-01T00:00:00');
+            function updateWeddingTimer() {
+                const now = new Date();
+                let diff = weddingDate - now;
+                if (diff < 0) {
+                    document.getElementById('wedding-timer').innerHTML = "<span>The big day is here!</span>";
+                    return;
+                }
+
+                let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                diff -= days * (1000 * 60 * 60 * 24);
+                let hours = Math.floor(diff / (1000 * 60 * 60));
+                diff -= hours * (1000 * 60 * 60);
+                let minutes = Math.floor(diff / (1000 * 60));
+                diff -= minutes * (1000 * 60);
+                let seconds = Math.floor(diff / 1000);
+
+                const timerElement = document.getElementById('wedding-timer');
+                if (timerElement) {
+                    timerElement.innerHTML = `
+                            <span>${days} days, </span>
+                            <span>${hours} hours, </span>
+                            <span>${minutes} minutes, </span>
+                            <span>and ${seconds} seconds</span>
+                        `;
+                }
+            }
+            if (document.getElementById('wedding-timer')) {
+                setInterval(updateWeddingTimer, 1000);
+                updateWeddingTimer();
+            }
+
+
+            // --- Floating Hearts Generator ---
+            const heartContainer = document.getElementById('heart-container');
+            if (heartContainer) {
+                const numberOfHearts = 20;
+                for (let i = 0; i < numberOfHearts; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.animationDuration = `${(Math.random() * 5) + 10}s`;
+                    heart.style.animationDelay = `${Math.random() * 10}s`;
+                    heart.style.transform = `scale(${(Math.random() * 0.5) + 0.5})`;
+                    heartContainer.appendChild(heart);
+                }
+            }
+
+            // --- Scroll Animation Observer for Timeline is now handled in the puzzle logic ---
+
+            // --- Love Story Collector Game Logic ---
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            const gameStartScreen = document.getElementById('game-start-screen');
+            const gameInfo = document.getElementById('game-info');
+            const gameOverScreen = document.getElementById('game-over-screen');
+            const startBtn = document.getElementById('start-game-btn');
+            const restartBtn = document.getElementById('restart-game-btn');
+            const scoreEl = document.getElementById('score');
+            const finalScoreEl = document.getElementById('final-score');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const gameContainer = document.getElementById('game-container');
+            const mobileControls = document.getElementById('mobile-controls');
+
+            const playerImg = new Image();
+            playerImg.src = 'https://i.scdn.co/image/ab6775700000ee855d2886da80793d70f081e162';
+            playerImg.crossOrigin = "Anonymous";
+
+            const gridSize = 25; // Increased icon size
+            let snake = [];
+            let food = {};
+            let score = 0;
+            let dx = gridSize;
+            let dy = 0;
+            let changingDirection = false;
+            let gameLoop;
+
+            function initGame() {
+                snake = [{ x: 150, y: 150 }];
+                score = 0;
+                scoreEl.textContent = 0;
+                dx = gridSize;
+                dy = 0;
+                changingDirection = false;
+                gameOverScreen.classList.add('hidden');
+                gameInfo.classList.remove('hidden');
+                gameStartScreen.classList.add('hidden');
+                generateFood();
+                main();
+            }
+
+            function main() {
+                if (didGameEnd()) {
+                    finalScoreEl.textContent = score;
+                    gameOverScreen.classList.remove('hidden');
+                    gameInfo.classList.add('hidden');
+                    clearTimeout(gameLoop);
+                    return;
+                }
+
+                changingDirection = false;
+                gameLoop = setTimeout(function onTick() {
+                    clearCanvas();
+                    drawFood();
+                    moveSnake();
+                    drawSnake();
+                    main();
+                }, 150); // Increased from 120 to 150 to make it slower
+            }
+
+            function clearCanvas() {
+                ctx.fillStyle = '#FFE4E9';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // Draw grid
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                for (let x = 0; x < canvas.width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+            }
+
+            function drawSnakePart(snakePart, index) {
+                if (index === 0) { // Head
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(snakePart.x + gridSize / 2, snakePart.y + gridSize / 2, gridSize / 2, 0, 2 * Math.PI);
+                    ctx.clip();
+                    try {
+                        ctx.drawImage(playerImg, snakePart.x, snakePart.y, gridSize, gridSize);
+                    } catch (e) {
+                        ctx.fillStyle = 'lightgreen';
+                        ctx.fillRect(snakePart.x, snakePart.y, gridSize, gridSize);
+                    }
+                    ctx.restore();
+                } else { // Body
+                    drawHeart(snakePart.x + gridSize / 2, snakePart.y + gridSize / 2, gridSize * 0.4, '#FF8FAB');
+                }
+            }
+
+            function drawSnake() {
+                snake.forEach(drawSnakePart);
+            }
+
+            function drawHeart(x, y, size, color) {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(x, y + size * 0.25);
+                ctx.quadraticCurveTo(x, y, x + size * 0.25, y);
+                ctx.quadraticCurveTo(x + size * 0.5, y, x + size * 0.5, y + size * 0.25);
+                ctx.quadraticCurveTo(x + size * 0.5, y + size * 0.5, x, y + size * 0.75);
+                ctx.quadraticCurveTo(x - size * 0.5, y + size * 0.5, x - size * 0.5, y + size * 0.25);
+                ctx.quadraticCurveTo(x - size * 0.5, y, x - size * 0.25, y);
+                ctx.quadraticCurveTo(x, y, x, y + size * 0.25);
+                ctx.fill();
+            }
+
+
+            function drawFood() {
+                drawHeart(food.x + gridSize / 2, food.y + gridSize / 2, gridSize * 0.6, '#D83F87');
+            }
+
+            function moveSnake() {
+                const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+                snake.unshift(head);
+
+                const didEatFood = snake[0].x === food.x && snake[0].y === food.y;
+                if (didEatFood) {
+                    score += 10;
+                    scoreEl.textContent = score;
+                    generateFood();
+                } else {
+                    snake.pop();
+                }
+            }
+
+            function randomTen(min, max) {
+                return Math.round((Math.random() * (max - min) + min) / gridSize) * gridSize;
+            }
+
+            function generateFood() {
+                food.x = randomTen(0, canvas.width - gridSize);
+                food.y = randomTen(0, canvas.height - gridSize);
+                snake.forEach(function isFoodOnSnake(part) {
+                    if (part.x === food.x && part.y === food.y) generateFood();
+                });
+            }
+
+            function processDirectionChange(direction) {
+                if (changingDirection) return;
+                changingDirection = true;
+                const goingUp = dy === -gridSize;
+                const goingDown = dy === gridSize;
+                const goingRight = dx === gridSize;
+                const goingLeft = dx === -gridSize;
+
+                if (direction === 'LEFT' && !goingRight) { dx = -gridSize; dy = 0; }
+                if (direction === 'UP' && !goingDown) { dx = 0; dy = -gridSize; }
+                if (direction === 'RIGHT' && !goingLeft) { dx = gridSize; dy = 0; }
+                if (direction === 'DOWN' && !goingUp) { dx = 0; dy = gridSize; }
+            }
+
+            function changeDirection(event) {
+                const LEFT_KEY = 37; const RIGHT_KEY = 39; const UP_KEY = 38; const DOWN_KEY = 40;
+                const A_KEY = 65; const D_KEY = 68; const W_KEY = 87; const S_KEY = 83;
+
+                const keyPressed = event.keyCode;
+                if (keyPressed === LEFT_KEY || keyPressed === A_KEY) processDirectionChange('LEFT');
+                if (keyPressed === UP_KEY || keyPressed === W_KEY) processDirectionChange('UP');
+                if (keyPressed === RIGHT_KEY || keyPressed === D_KEY) processDirectionChange('RIGHT');
+                if (keyPressed === DOWN_KEY || keyPressed === S_KEY) processDirectionChange('DOWN');
+            }
+
+            function didGameEnd() {
+                for (let i = 4; i < snake.length; i++) {
+                    if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+                }
+                const hitLeftWall = snake[0].x < 0;
+                const hitRightWall = snake[0].x > canvas.width - gridSize;
+                const hitTopWall = snake[0].y < 0;
+                const hitBottomWall = snake[0].y > canvas.height - gridSize;
+                return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall;
+            }
+
+            // Fullscreen
+            fullscreenBtn.addEventListener('click', () => {
+                if (gameContainer.requestFullscreen) {
+                    gameContainer.requestFullscreen();
+                } else if (gameContainer.webkitRequestFullscreen) { /* Safari */
+                    gameContainer.webkitRequestFullscreen();
+                } else if (gameContainer.msRequestFullscreen) { /* IE11 */
+                    gameContainer.msRequestFullscreen();
+                }
+            });
+
+            // Mobile Controls
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            if (isTouchDevice) {
+                mobileControls.classList.remove('hidden');
+                document.getElementById('up-btn').addEventListener('click', () => processDirectionChange('UP'));
+                document.getElementById('down-btn').addEventListener('click', () => processDirectionChange('DOWN'));
+                document.getElementById('left-btn').addEventListener('click', () => processDirectionChange('LEFT'));
+                document.getElementById('right-btn').addEventListener('click', () => processDirectionChange('RIGHT'));
+            }
+
+            // Swipe Controls
+            let touchStartX = 0; let touchStartY = 0; let touchEndX = 0; let touchEndY = 0;
+            canvas.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, false);
+            canvas.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipe();
+            }, false);
+            function handleSwipe() {
+                const deltaX = touchEndX - touchStartX;
+                const deltaY = touchEndY - touchStartY;
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    if (deltaX > 0) processDirectionChange('RIGHT'); else processDirectionChange('LEFT');
+                } else {
+                    if (deltaY > 0) processDirectionChange('DOWN'); else processDirectionChange('UP');
+                }
+            }
+
+            playerImg.onload = () => {
+                startBtn.addEventListener('click', initGame);
+                restartBtn.addEventListener('click', initGame);
+                document.addEventListener('keydown', changeDirection);
+            };
+            playerImg.onerror = () => {
+                startBtn.addEventListener('click', initGame);
+                restartBtn.addEventListener('click', initGame);
+                document.addEventListener('keydown', changeDirection);
+            };
+        });
+    </script>
+</body>
+</html>
